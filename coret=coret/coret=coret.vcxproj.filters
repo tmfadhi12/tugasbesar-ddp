@@ -15,10 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main_program.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="database.h">
+    <ClCompile Include="coret=coret.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
