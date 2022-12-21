@@ -1,25 +1,25 @@
-#include "database.h"
+#include "database.h" //mengambil/menghubungkan header "database.h"
 
-void homePage();
-void MenuOpsi1();
-void halRegister(Nasabah *nsb);
-void halLogin();
-void opsiLandingPage();
-void halCekSaldo();
-void halTarikTunai();
-void halSetorTunai();
-void halTransfer();
-void halDaftarMutasi();
-void halPelayanan();
-void halUtama();
-void antarRekening();
-void antarBank();
-void virtualAcc();
-void ubahPIN();
-void ubahEmail();
-void ubahAktivasi();
+void homePage(); //halaman awal
+void MenuOpsi1(); //menu opsi pd halaman awal
+void halRegister(Nasabah *nsb); //halaman untuk nasabah register
+void halLogin(); //halaman untuk nasabah login
+void opsiLandingPage(); //opsi pada landing page setelah berhasil login
+void halCekSaldo(); //halaman pengecekan saldo
+void halTarikTunai(); //halaman untuk penarikan tunai
+void halSetorTunai(); //halaman untuk setor tunai
+void halTransfer(); //halaman untuk transfer
+void halDaftarMutasi(); //halaman untuk melihat histori transaksi terakhir
+void halPelayanan(); //halaman pelayanan bank terkait dengan rekening nasabah
+void halUtama(); //halaman setelah nasabah berhasil login
+void antarRekening(); //halaman transfer antar rek
+void antarBank(); //halama transfer antar bank lain
+void virtualAcc(); //halaman payment virtual account
+void ubahPIN(); //halaman untuk mengubah pin
+void ubahEmail(); //halaman untuk mengubah email
+void ubahAktivasi(); //halaman untuk mengubah aktivasi kartu
 
-string email;
+string email; //menyimpan email ketika berhasil login untuk kebutuhan2 parameter yang berkaitan dengan nasabah
 
 int main()
 {
@@ -40,10 +40,10 @@ int main()
         case 2:system("cls"); halRegister(&nsb); break;
         default:
             cout << "Masukkan Opsi yang valid!\n";
-            if (cin.fail())
+            if (cin.fail()) //apabila input error/failure dikarenakan yg diminta input integer
             {
-                cin.clear();
-                cin.ignore();
+                cin.clear(); // menghapus isi input
+                cin.ignore(); //mengabaikan inputnya
             }
             break;
         }
@@ -98,8 +98,9 @@ pin_reg:
     cin >> nsb->tgl_lahir;
 
     srand(time(0));
-    int random = 0 + (rand() % 999);
-    stringstream nr;
+    int random = 000 + (rand() % 999); //random number untuk no-rek
+
+    stringstream nr; //random number dari int menjadi string untuk menjadi no-rek
     nr << random;
     string no_rek;
     nr >> no_rek;
@@ -154,7 +155,7 @@ input_email:
             }
 
             pinverif(email, pin);
-            if (wrongpincounter == 3)
+            if (wrongpincounter == 3) //apabila salah pin 3x mka diblokir
             {
                 system("cls");
                 blokirkartu(email);
@@ -282,6 +283,12 @@ input:
             if (nominal % 50000 != 0 || nominal % 100000 != 0)
             {
                 cout << "\nTarik Tunai hanya menerima kelipatan Rp. 50,000 dan Rp. 100,000\n\n";
+                system("pause");
+                system("cls");
+                goto input;
+            }
+            else if (nominal >= 2000000) {
+                cout << "\nBatas Tarik Tunai adalah Rp. 2,0000,000\n\n";
                 system("pause");
                 system("cls");
                 goto input;

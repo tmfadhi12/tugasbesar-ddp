@@ -11,9 +11,9 @@
 using namespace std;
 
 //db connection
-const string server = "tcp://127.0.0.1:3306";
-const string username = "root";
-const string password = "";
+const string server = "tcp://127.0.0.1:3306"; //server lokal mySQL
+const string username = "root"; //username server mySQL
+const string password = ""; //password server mySQL
 
 typedef struct {
 	string nama_lengkap;
@@ -23,21 +23,12 @@ typedef struct {
 	string pin;
 	int status_blokir;
 	int status_kartu;
-}Nasabah;
+}Nasabah; //Data record nasabah
 
 typedef struct {
 	string no_rek;
 	double saldo;
-}Rekening;
-
-typedef struct {
-	int hh;
-	int mm;
-	int ss;
-	int dd;
-	int mn;
-	int yy;
-}Time;
+}Rekening; //data record yang menyimpan saldo nasabah
 
 static void resiRegister(Nasabah nsb);
 static void sendtodb(Nasabah nsb);
