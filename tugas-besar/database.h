@@ -30,61 +30,65 @@ typedef struct {
 	double saldo;
 }Rekening; //data record yang menyimpan saldo nasabah
 
-static void resiRegister(Nasabah nsb);
-static void sendtodb(Nasabah nsb);
-static void emailverif(string email);
-static void pinverif(string eamil, string pin);
-static void blokirkartu(string email);
-static void getSaldofromDB(string email);
-static void systemTarikTunai(int nominal, string email);
-static void systemTarikTunaiCalc(string email, string nominal, int jumlahtariktunai);
-static void systemSetorTunai(int nominal, string email);
-static void systemSetorTunaiCalc(string email, string nominal, int jumlahtariktunai);
-static void resiPenarikanBerhasil(int jumlahpenarikan);
-static void createHistoryTransaksi(string no_rek, string nama_transaksi, int nominal);
-static void resiSetoranBerhasil(int jumlahpenarikan);
-static void getDaftarMutasi(string email, int jumlahitem);
-static void validasiNoRekAntarRek(string email, string no_rekTujuan);
-static void systemTransaksiAntarRek(string email, string no_rekTujuan, int nominaltf);
-static void konfirmasiTransfer(string no_rekTujuan, int nominaltf);
-static void resiTf(string nama_penerima, int nominaltf, string norek);
-static void validasiTglLahir(string tgl_lahir, string email);
-static void systemUbahPIN(string email, int PIN);
-static void systemUbahEmail(string email, string konfirmasiemail);
-static void systemStatAktivasi(string email, int opsi);
-static void validasiStatusKartu(string email);
+static void resiRegister(Nasabah nsb); // pesan yang muncul setelah register
+static void sendtodb(Nasabah nsb); // mengirim data yang didapat setelah register ke database mySQL
+static void emailverif(string email); //verifikasi email apakah email sesuai/tidak dgn yang ada di database
+static void pinverif(string eamil, string pin); //verifikasi apakah pin sesuai/tidak dgn yang ada di database
+static void blokirkartu(string email); //fungsi untuk pemblokiran kartu ketika syarat memenuhi
+static void getSaldofromDB(string email); //get info saldo dari database mySQL
+static void systemTarikTunai(int nominal, string email); //fungsi tarik tunai
+static void systemTarikTunaiCalc(string email, string nominal, int jumlahtariktunai);//fungsi kalkulasi penarikan tunai
+static void systemSetorTunai(int nominal, string email); //fungsi setor tunai
+static void systemSetorTunaiCalc(string email, string nominal, int jumlahtariktunai);//fungsi kalkulasi setor tunai
+static void resiPenarikanBerhasil(int jumlahpenarikan); //pesan berhasil ketika transaksi berhasil
+static void createHistoryTransaksi(string no_rek, string nama_transaksi, int nominal); //fungsi untuk membuat histori transaksi ketika transaksi berhasil dilakukan
+static void resiSetoranBerhasil(int jumlahpenarikan); //pesan yang muncul setelah setor tunai muncul
+static void getDaftarMutasi(string email, int jumlahitem); // get data histori transaksi dari database sesuai dengan keinginan
+static void validasiNoRekAntarRek(string email, string no_rekTujuan); //pengecekan apakah norek yang dituju ada/tidak
+static void systemTransaksiAntarRek(string email, string no_rekTujuan, int nominaltf); //fungsi transfer antar rekening
+static void konfirmasiTransfer(string no_rekTujuan, int nominaltf); //konfirmasi apakah transfer mau dilakukan/tidak setelah nasabah yg dituju ada
+static void resiTf(string nama_penerima, int nominaltf, string norek); //pesan yang keluar setelah transfer dilakukan
+static void validasiTglLahir(string tgl_lahir, string email); //validasi apakah tgl lahir nasabah inputkan sesuai dgn yg ada di database mySQL
+static void systemUbahPIN(string email, int PIN); //fungsi pengubahan PIN
+static void systemUbahEmail(string email, string konfirmasiemail); //fungsi pengubahan EMAIL
+static void systemStatAktivasi(string email, int opsi); //fungsi pengubahan status aktivasi kartu
+static void validasiStatusKartu(string email); //pengecekan apakah kartu tersebut aktiv/tidak
 
-static bool login_stats = 0;
-static bool email_verif = 0;
-static int	wrongpincounter = 0;
-static int	blokir_stats;
-static int stat_exit = 1;
-static bool tgl_lahir_statubahpin = 0;
-static bool tgl_lahir_statubahemail = 0;
-static bool tgl_lahir_statusubahaktivasi = 0;
-static string statuskartu;
+static bool login_stats = 0; //status login apakah login diterima/tidak
+static bool email_verif = 0; //apakah email benar/tidak
+static int	wrongpincounter = 0; //counter ketika nasabah salah memasukkan pin
+static int	blokir_stats; //pemberian status blokir ketika nasabah salah memasukkan pin 3x
+static int stat_exit = 1; //status apakah user ingin exit/tidak ketika selesai bertransaksi
+static bool tgl_lahir_statubahpin = 0; //status apakah tgl lhir benar/tidak ketika mengubah pin
+static bool tgl_lahir_statubahemail = 0; //status apakah tgl lhir benar/tidak ketika mengubah email
+static bool tgl_lahir_statusubahaktivasi = 0; //status apakah tgl lhir benar/tidak ketika mengubah aktivasi kartu
+static string statuskartu; //penerapan status kartu
 
 static void resiRegister(Nasabah nsb) {
 	if (nsb.email != "" && nsb.nama_lengkap != "" && nsb.pin != "" && nsb.tgl_lahir != "") {
-		cout << "SELAMAT AKUN ANDA BERHASIL DIDAFTARKAN\n";
-		cout << "Nama Lengkap : " << nsb.nama_lengkap << "\n";
-		cout << "E-Mail : " << nsb.email << "\n";
-		cout << "Tanggal Lahir : " << nsb.tgl_lahir << "\n";
-		cout << "No. Rekening : " << nsb.no_rek << "\n\n";
-	}
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n";
+		cout << "				  SELAMAT AKUN ANDA BERHASIL DIDAFTARKAN!\n\n";
+		cout << "	Nama Lengkap	:	" << nsb.nama_lengkap << "\n";
+		cout << "	E-Mail		:	" << nsb.email << "\n";
+		cout << "	Tanggal Lahir	:	" << nsb.tgl_lahir << "\n";
+		cout << "	No. Rekening	:	" << nsb.no_rek << "\n\n";
+	} 
 	else {
-		cout << "MOHON MAAF, AKUN ANDA GAGAL DIDAFTARKAN\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
+		cout << "				  MOHON MAAF, AKUN ANDA GAGAL DIDAFTARKAN\n";
 	}
 }
 
 static void sendtodb(Nasabah nsb) {
-	sql::Driver* driver;
-	sql::Connection* con;
-	sql::Statement* stmt;
-	sql::PreparedStatement* pstmt;
+	sql::Driver* driver; //untuk menyambungkan C++ ke mySQL
+	sql::Connection* con; //untuk menyambungkan C++ ke mySQL
+	sql::Statement* stmt; //untuk menyambungkan C++ ke mySQL
+	sql::PreparedStatement* pstmt; //untuk menulis syntax SQL di C++ yang nnt dibaca mySQL
 
 	time_t now = time(0);
-	string tgl = ctime(&now);
+	string tgl = ctime(&now); //mendapatkan local time and date
 
 	try
 	{
@@ -96,7 +100,7 @@ static void sendtodb(Nasabah nsb) {
 		cout << "Could not connect to server. Error message: " << e.what() << endl;
 		system("pause");
 		exit(1);
-	}
+	} //trycatch apakah berhasil connect ke mySQL atau tidak
 
 	con->setSchema("banknur");
 
@@ -130,7 +134,7 @@ static void emailverif(string email) {
 	sql::Driver* driver;
 	sql::Connection* con;
 	sql::PreparedStatement* pstmt;
-	sql::ResultSet* result;
+	sql::ResultSet* result; //untuk fungsi get dari mySQL
 
 	string sv_email;
 
@@ -164,10 +168,10 @@ static void emailverif(string email) {
 
 email_verification:
 	system("cls");
-	if (sv_email == "")
+	if (sv_email == "") //apabila email tidak ada di database mySQK maka tertolak
 	{
-		cout << "Login\n";
-		cout << "=====================================================================================\n\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Akun tidak terdaftar, silahkan menuju halaman Register untuk melakukan pendaftaran\n";
 		system("pause");
 	}
@@ -220,8 +224,8 @@ pin_verification:
 	if (sv_pin == "")
 	{
 		wrongpincounter++;
-		cout << "Login\n";
-		cout << "=====================================================================================\n\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Pin Salah! Mohon cek lebih teliti lagi. \n";
 		system("pause");
 	}
@@ -250,8 +254,8 @@ static void blokirkartu(string email) {
 	con->setSchema("banknur");
 	pstmt = con->prepareStatement("UPDATE nasabah SET status_blokir = 1 WHERE email ='" + email + "'");
 	pstmt->executeQuery();
-	cout << "Login\n";
-	cout << "=====================================================================================\n\n";
+	cout << "\n                                                     Pesan\n\n";
+	cout << "========================================================================================================================\n\n";
 	cout << "Mohon maaf, Demi keamanan akun anda diblokir dikarenakan melakukan kesalahan dalam memasukkan PIN sebanyak 3x.\n";
 	cout << "Silahkan datang ke kantor pusat/cabang upaya melakukan pembebasan status blokir kartu anda, terima kasih.\n";
 
@@ -283,7 +287,7 @@ static void getSaldofromDB(string email) {
 
 	con->setSchema("banknur");
 
-	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.email FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek HAVING nasabah.email = '"+email+"'");
+	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.email FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek HAVING nasabah.email = '" + email + "'");
 	result = pstmt->executeQuery();
 
 	while (result->next()) {
@@ -323,7 +327,7 @@ static void systemTarikTunai(int nominal, string email) {
 	result = pstmt->executeQuery();
 
 	while (result->next()) {
-		saldo =  result->getInt(2);
+		saldo = result->getInt(2);
 	}
 
 	delete result;
@@ -335,8 +339,8 @@ static void systemTarikTunai(int nominal, string email) {
 		int ops;
 	input:
 		system("cls");
-		cout << "Tarik Tunai\n";
-		cout << "=====================================================================================\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Mohon Maaf, Saldo anda tidak cukup untuk melakukan penarikan tunai\n\n";
 		cout << "98.Kembali\n";
 		cout << "99.Keluar\n\n";
@@ -350,13 +354,13 @@ static void systemTarikTunai(int nominal, string email) {
 			cin.clear();
 			cin.ignore();
 		}
-		
+
 		if (ops == 98)
 		{
 			system("cls");
 			stat_exit = 0;
 		}
-		else if(ops == 99){
+		else if (ops == 99) {
 			exit(1);
 		}
 		else {
@@ -372,7 +376,7 @@ static void systemTarikTunai(int nominal, string email) {
 		string saldostr;
 		sldtostr >> saldostr;
 
-		systemTarikTunaiCalc(email, saldostr,nominal);
+		systemTarikTunaiCalc(email, saldostr, nominal);
 	}
 }
 
@@ -397,7 +401,7 @@ static void systemTarikTunaiCalc(string email, string nominal, int jumlahtariktu
 	}
 
 	con->setSchema("banknur");
-	pstmt = con->prepareStatement("UPDATE rekening AS rek JOIN (SELECT nasabah.email, nasabah.no_rek FROM nasabah GROUP BY no_rek HAVING nasabah.email='"+email+"')ns ON rek.no_rek=ns.no_rek SET rek.saldo='"+nominal+"'");
+	pstmt = con->prepareStatement("UPDATE rekening AS rek JOIN (SELECT nasabah.email, nasabah.no_rek FROM nasabah GROUP BY no_rek HAVING nasabah.email='" + email + "')ns ON rek.no_rek=ns.no_rek SET rek.saldo='" + nominal + "'");
 	pstmt->executeQuery();
 
 	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.email FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek HAVING nasabah.email = '" + email + "'");
@@ -407,7 +411,7 @@ static void systemTarikTunaiCalc(string email, string nominal, int jumlahtariktu
 		no_rek = result->getString(1);
 	}
 
-	
+
 	createHistoryTransaksi(no_rek, "Tarik Tunai", jumlahtariktunai);
 	resiPenarikanBerhasil(jumlahtariktunai);
 
@@ -439,31 +443,31 @@ static void systemTarikTunaiCalc(string email, string nominal, int jumlahtariktu
 static void resiPenarikanBerhasil(int jumlahpenarikan) {
 	string day;
 	time_t now = time(0);
-	tm *ltm = localtime(&now);
+	tm* ltm = localtime(&now);
 
 	switch (ltm->tm_wday)
 	{
-	case 0:day="Senin"; break;
-	case 1:day="Selasa"; break;
-	case 2:day="Rabu"; break;
-	case 3:day="Kamis"; break;
-	case 4:day="Jumat"; break;
-	case 5:day="Sabtu"; break;
-	case 6:day="Minggu"; break;
+	case 0:day = "Senin"; break;
+	case 1:day = "Selasa"; break;
+	case 2:day = "Rabu"; break;
+	case 3:day = "Kamis"; break;
+	case 4:day = "Jumat"; break;
+	case 5:day = "Sabtu"; break;
+	case 6:day = "Minggu"; break;
 	default:
 		break;
 	}
 
 	system("cls");
-	cout << "Tarik Tunai\n";
-	cout << "=====================================================================================\n\n";
+	cout << "\n                                                     Pesan\n\n";
+	cout << "========================================================================================================================\n\n";
 	cout << "Penarikan Berhasil.\n";
 	cout << "Terima Kasih telah menggunakan layanan Bank Kami.\n\n";
 	cout << "--------------------------------------\n\n";
 	cout << "ATM BNI\n\n";
 	cout << "Jumlah Uang yang di Tarik\n\n";
-	cout << "Rp. "<<jumlahpenarikan << "\n";
-	cout << day << " " << ltm->tm_mday << "-" << ltm->tm_mon+1 << "-" << 1900+ltm->tm_year <<  " " << ltm->tm_hour+5 << ":" << ltm->tm_min+30 << ":" << ltm->tm_sec << "\n\n";
+	cout << "Rp. " << jumlahpenarikan << "\n";
+	cout << day << " " << ltm->tm_mday << "-" << ltm->tm_mon + 1 << "-" << 1900 + ltm->tm_year << " " << ltm->tm_hour + 5 << ":" << ltm->tm_min + 30 << ":" << ltm->tm_sec << "\n\n";
 	cout << "Info lebih lanjut Hubungi Kami di 12909\n";
 	cout << "--------------------------------------\n\n";
 }
@@ -508,15 +512,15 @@ static void systemSetorTunai(int nominal, string email) {
 	input:
 		int ops;
 		system("cls");
-		cout << "Setor Tunai";
-		cout << "=====================================================================================\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Mohon Maaf, Limit Setoran Tunai Adalah Rp. 10,000,000\n\n";
 
 		cout << "98.Kembali\n";
 		cout << "99.Keluar\n\n";
 		cout << "Masukkan Opsi : ";
 		cin >> ops;
-		
+
 		if (ops == 99)
 		{
 			exit(1);
@@ -626,8 +630,8 @@ static void resiSetoranBerhasil(int jumlahpenarikan) {
 	}
 
 	system("cls");
-	cout << "Setor Tunai\n";
-	cout << "=====================================================================================\n\n";
+	cout << "\n                                                     Pesan\n\n";
+	cout << "========================================================================================================================\n\n";
 	cout << "Setoran Berhasil.\n";
 	cout << "Terima Kasih telah menggunakan layanan Bank Kami.\n\n";
 	cout << "--------------------------------------\n\n";
@@ -703,12 +707,12 @@ static void getDaftarMutasi(string email, int jumlahitem) {
 
 	con->setSchema("banknur");
 
-	pstmt = con->prepareStatement("SELECT transaksi.no_rek, nasabah.email, transaksi.timestamp,transaksi.jenis_transaksi,transaksi.nominal, transaksi.detail FROM nasabah INNER JOIN transaksi ON nasabah.no_rek = transaksi.no_rek HAVING nasabah.email ='"+email+"' ORDER BY transaksi.id DESC LIMIT "+jmlstr+"");
+	pstmt = con->prepareStatement("SELECT transaksi.no_rek, nasabah.email, transaksi.timestamp,transaksi.jenis_transaksi,transaksi.nominal, transaksi.detail FROM nasabah INNER JOIN transaksi ON nasabah.no_rek = transaksi.no_rek HAVING nasabah.email ='" + email + "' ORDER BY transaksi.id DESC LIMIT " + jmlstr + "");
 	result = pstmt->executeQuery();
 
 	while (result->next()) {
 		cout << result->getString(4) << " Rp." << result->getString(5) << "\n";
-		if (result->getString(6)!="")
+		if (result->getString(6) != "")
 		{
 			cout << result->getString(6) << "\n";
 		}
@@ -722,7 +726,7 @@ static void getDaftarMutasi(string email, int jumlahitem) {
 	delete con;
 }
 
-static void validasiNoRekAntarRek(string email,string no_rekTujuan) {
+static void validasiNoRekAntarRek(string email, string no_rekTujuan) {
 	sql::Driver* driver;
 	sql::Connection* con;
 	sql::PreparedStatement* pstmt;
@@ -743,7 +747,7 @@ static void validasiNoRekAntarRek(string email,string no_rekTujuan) {
 	}
 
 	con->setSchema("banknur");
-	
+
 	pstmt = con->prepareStatement("SELECT nasabah.no_rek FROM nasabah WHERE nasabah.no_rek = '" + no_rekTujuan + "'");
 	result = pstmt->executeQuery();
 
@@ -758,8 +762,8 @@ static void validasiNoRekAntarRek(string email,string no_rekTujuan) {
 	if (no_rektujuan == "")
 	{
 		system("cls");
-		cout << "Transfer Antar Rekening\n";
-		cout << "=====================================================================================\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Kode Rekening Bank Nur Indonesia : 221524XXX\n\n";
 
 		cout << "Mohon Maaf, Tidak ada Nasabah yang di Maksud.\n\n";
@@ -767,7 +771,7 @@ static void validasiNoRekAntarRek(string email,string no_rekTujuan) {
 	else {
 		int nominaltf;
 		system("cls");
-input:
+	input:
 		cout << "Transfer Antar Rekening\n";
 		cout << "=====================================================================================\n";
 
@@ -787,13 +791,13 @@ input:
 			system("cls");
 			goto input;
 		}
-		
+
 		system("cls");
-		systemTransaksiAntarRek(email,no_rekTujuan,nominaltf);
+		systemTransaksiAntarRek(email, no_rekTujuan, nominaltf);
 	}
 }
 
-static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nominaltf) {
+static void systemTransaksiAntarRek(string email, string no_rekTujuan, int nominaltf) {
 
 	sql::Driver* driver;
 	sql::Connection* con;
@@ -823,7 +827,7 @@ static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nomina
 
 	con->setSchema("banknur");
 
-	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.nama_lengkap FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek WHERE nasabah.email = '"+email+"'");
+	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.nama_lengkap FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek WHERE nasabah.email = '" + email + "'");
 	result = pstmt->executeQuery();
 
 	while (result->next()) {
@@ -832,7 +836,7 @@ static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nomina
 		nama_pengirim = result->getString(3);
 	}
 
-	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.nama_lengkap FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek HAVING nasabah.no_rek = '"+no_rekTujuan+"'");
+	pstmt = con->prepareStatement("SELECT nasabah.no_rek, rekening.saldo, nasabah.nama_lengkap FROM nasabah INNER JOIN rekening ON nasabah.no_rek = rekening.no_rek HAVING nasabah.no_rek = '" + no_rekTujuan + "'");
 	result = pstmt->executeQuery();
 
 	while (result->next()) {
@@ -843,9 +847,9 @@ static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nomina
 	if (saldo_asal < nominaltf)
 	{
 		int opsi;
-		input:
-		cout << "Transfer Antar Rekening\n";
-		cout << "=====================================================================================\n\n";
+	input:
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Mohon Maaf, Saldo yang anda miliki tidak cukup untuk melanjutkan transaksi.\n\n";
 
 		cout << "98.Home\n";
@@ -855,7 +859,8 @@ static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nomina
 		cin >> opsi;
 		if (opsi == 99) {
 			exit(1);
-		}else if(opsi == 98)
+		}
+		else if (opsi == 98)
 		{
 			stat_exit = 0;
 		}
@@ -872,7 +877,7 @@ static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nomina
 		}
 	}
 
-	if (stat_exit==1)
+	if (stat_exit == 1)
 	{
 		konfirmasiTransfer(no_rekTujuan, nominaltf);
 
@@ -920,12 +925,12 @@ static void systemTransaksiAntarRek(string email,string no_rekTujuan, int nomina
 	}
 }
 
-static void resiTf(string nama_penerima,int nominaltf, string norek) {
+static void resiTf(string nama_penerima, int nominaltf, string norek) {
 	system("cls");
-	cout << "Transfer Antar Rekening\n";
-	cout << "=====================================================================================\n";
+	cout << "\n                                                     Pesan\n\n";
+	cout << "========================================================================================================================\n\n";
 	cout << "Transfer Berhasil\n\n";
-	
+
 	cout << "-------------------------------------\n";
 	cout << "---------------ATM BNI---------------\n";
 	cout << "Nama Penerima : " << nama_penerima << "\n";
@@ -966,8 +971,8 @@ static void konfirmasiTransfer(string no_rekTujuan, int nominaltf) {
 		nama_penerima = result->getString(3);
 	}
 
-	cout << "Transfer Antar Rekening\n";
-	cout << "=====================================================================================\n";
+	cout << "\n                                                     Pesan\n\n";
+	cout << "========================================================================================================================\n\n";
 	cout << "Konfirmasi Transaksi\n\n";
 
 	cout << "Nasabah Penerima : " << nama_penerima << "\n";
@@ -984,7 +989,7 @@ static void konfirmasiTransfer(string no_rekTujuan, int nominaltf) {
 	cout << "Masukkan Opsi : ";
 	cin >> ops;
 
-	while (ops!=1)
+	while (ops != 1)
 	{
 		switch (ops)
 		{
@@ -1001,8 +1006,8 @@ static void konfirmasiTransfer(string no_rekTujuan, int nominaltf) {
 		}
 		system("pause");
 		system("cls");
-		cout << "Transfer Antar Rekening\n";
-		cout << "=====================================================================================\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Konfirmasi Transaksi\n\n";
 
 		cout << "Nasabah Penerima : " << nama_penerima << "\n";
@@ -1044,7 +1049,7 @@ static void validasiTglLahir(string tgl_lahir, string email) {
 
 	con->setSchema("banknur");
 
-	pstmt = con->prepareStatement("SELECT nasabah.no_rek, nasabah.nama_lengkap, nasabah.email FROM nasabah WHERE nasabah.email = '"+email+"' AND nasabah.tgl_lahir='"+tgl_lahir+"'");
+	pstmt = con->prepareStatement("SELECT nasabah.no_rek, nasabah.nama_lengkap, nasabah.email FROM nasabah WHERE nasabah.email = '" + email + "' AND nasabah.tgl_lahir='" + tgl_lahir + "'");
 	result = pstmt->executeQuery();
 
 	while (result->next()) {
@@ -1058,8 +1063,8 @@ static void validasiTglLahir(string tgl_lahir, string email) {
 	if (nama_penerima == "")
 	{
 		system("cls");
-		cout << "Login\n";
-		cout << "=====================================================================================\n\n";
+		cout << "\n                                                     Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Tanggal Lahir yang Anda Masukkan Salah! Mohon cek lebih teliti lagi. \n";
 		system("pause");
 	}
@@ -1111,7 +1116,7 @@ static void systemUbahPIN(string email, int PIN) {
 		system("pause");
 	}
 	else {
-		pstmt = con->prepareStatement("UPDATE nasabah SET pin='"+pinstr+"' WHERE email='"+email+"'");
+		pstmt = con->prepareStatement("UPDATE nasabah SET pin='" + pinstr + "' WHERE email='" + email + "'");
 		pstmt->executeQuery();
 
 		cout << "PIN Berhasil di Ubah.\n\n";
@@ -1171,7 +1176,7 @@ static void systemUbahEmail(string email, string konfirmasiemail) {
 	delete con;
 }
 
-static void systemStatAktivasi(string email,int opsi) {
+static void systemStatAktivasi(string email, int opsi) {
 	sql::Driver* driver;
 	sql::Connection* con;
 	sql::PreparedStatement* pstmt;
@@ -1253,8 +1258,8 @@ static void validasiStatusKartu(string email) {
 
 	if (statuskartu == "1")
 	{
-		cout << "Transaksi Gagal\n";
-		cout << "=====================================================================================\n\n";
+		cout << "\n							  Pesan\n\n";
+		cout << "========================================================================================================================\n\n";
 		cout << "Anda tidak dapat melakukan Transaksi ini karena Kartu anda telah dinonaktifkan.\n";
 		cout << "Kunjungi banknur.co.id untuk Info lebih lanjut.\n\n";
 		system("pause");

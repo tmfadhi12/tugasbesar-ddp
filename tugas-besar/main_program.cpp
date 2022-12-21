@@ -23,6 +23,7 @@ string email; //menyimpan email ketika berhasil login untuk kebutuhan2 parameter
 
 int main()
 {
+    system("Color 3E");
     int op;
     Nasabah nsb;
 
@@ -57,23 +58,24 @@ int main()
 }
 
 void homePage() {
-    cout << "SELAMAT DATANG DI ATM BANK NUR INDONESIA\n";
-    cout << "Nikmati fitur transaksi kami selama 24 jam\n";
-    cout << "Info pelayanan dan penawaran dapat di cek pada laman resmi kami di www.banknur.co.id\n";
-    cout << "=====================================================================================\n\n";
+    cout << "                                         SELAMAT DATANG DI ATM BANK NUR INDONESIA\n";
+    cout << "                                        Nikmati fitur transaksi kami selama 24 jam\n";
+    cout << "                   Info pelayanan dan penawaran dapat di cek pada laman resmi kami di www.banknur.co.id\n";
+    cout << "========================================================================================================================\n\n";
+    cout << "                                          SILAHKAN MASUK/DAFTAR TERLEBIH DAHULU\n\n";
 }
 
 void MenuOpsi1() {
-    cout << "1 : Login\n";
-    cout << "2 : Register\n\n";
-    cout << "99 : Keluar\n";
+    cout << "       1. Login\n";
+    cout << "       2. Register\n\n";
+    cout << "       99. Keluar\n";
 }
 
 void halRegister(Nasabah *nsb) {
     string pin;
 
-    cout << "Register\n";
-    cout << "=====================================================================================\n\n";
+    cout << "\n                                                     Register\n\n";
+    cout << "========================================================================================================================\n\n";
 
     cin.ignore();
     cout << "Silahkan masukkan Nama Lengkap anda : ";
@@ -115,11 +117,12 @@ void halLogin() {
     string pin;
 
 input_email:
-    cout << "Login\n";
-    cout << "=====================================================================================\n\n";
+    cout << "\n                                                          Login";
+    cout << "\n                                                Silahkan Masukkan E-Mail Anda\n\n";
+    cout << "========================================================================================================================\n\n";
 
-    cout << "99.Cancel\n\n";
-    cout << "Silahkan masukkan E-Mail anda : ";
+    cout << "       99.Cancel\n\n";
+    cout << "       Silahkan masukkan E-Mail anda : ";
     cin >> email;
 
     if (email == "99")
@@ -130,8 +133,8 @@ input_email:
     emailverif(email);
     if (blokir_stats == 1)
     {
-        cout << "Login\n";
-        cout << "=====================================================================================\n\n";
+        cout << "\n                                                          Pesan\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "Akun ini telah diblokir. Info lebih lanjut datangi Bank Pusat/Cabang terdekat Kami. Terimakasih\n";
         exit(1);
     }
@@ -141,11 +144,12 @@ input_email:
     input_pin:
         if (login_stats == 0)
         {
-            cout << "Login\n";
-            cout << "=====================================================================================\n\n";
+            cout << "\n                                                          Login";
+            cout << "\n                                                Silahkan Masukkan PIN Anda\n\n";
+            cout << "========================================================================================================================\n\n";
 
-            cout << "99.Cancel\n\n";
-            cout << "Silahkan masukkan PIN anda : ";
+            cout << "       99.Cancel\n\n";
+            cout << "       Silahkan masukkan PIN anda : ";
             cin >> pin;
 
 
@@ -178,7 +182,7 @@ void halUtama(){
         int opt;
 
         cout << "Pilih Transaksi Pembayaran\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         opsiLandingPage();
         cout << "\nPilih Opsi : ";
         cin >> opt;
@@ -209,7 +213,7 @@ void halUtama(){
             }
             system("cls");
             cout << "Pilih Transaksi Pembayaran\n";
-            cout << "=====================================================================================\n\n";
+            cout << "========================================================================================================================\n\n";
             opsiLandingPage();
             cout << "\nPilih Opsi : ";
             cin >> opt;
@@ -238,7 +242,7 @@ void halCekSaldo() {
 
     system("cls");
     cout << "Jumlah Saldo yang Anda Miliki\n";
-    cout << "=====================================================================================\n";
+    cout << "========================================================================================================================\n\n";
     getSaldofromDB(email);
 }
 
@@ -255,7 +259,7 @@ void halTarikTunai() {
 
 input:
     cout << "Tarik Tunai\n";
-    cout << "=====================================================================================\n";
+    cout << "========================================================================================================================\n\n";
     cout << "1. Rp. 50.000\n";
     cout << "2. Rp. 100.000\n";
     cout << "3. Rp. 200.000\n";
@@ -279,7 +283,7 @@ input:
         case 6:nominal = 1000000; systemTarikTunai(nominal, email); break;
         case 7:
             cout << "Masukkan Nominal yang diinginkan : ";
-            cin >> nominal; 
+            cin >> nominal;
             if (nominal % 50000 != 0 || nominal % 100000 != 0)
             {
                 cout << "\nTarik Tunai hanya menerima kelipatan Rp. 50,000 dan Rp. 100,000\n\n";
@@ -305,14 +309,14 @@ input:
             }
             break;
         }
-        if (stat_exit==0)
+        if (stat_exit == 0)
         {
             system("cls");
             halUtama();
         }
         system("cls");
         cout << "Tarik Tunai\n";
-        cout << "=====================================================================================\n";
+        cout << "========================================================================================================================\n\n";
         cout << "1. Rp. 50.000\n";
         cout << "2. Rp. 100.000\n";
         cout << "3. Rp. 200.000\n";
@@ -336,33 +340,33 @@ void halSetorTunai() {
         halUtama();
     }
 
-    int nominal_setor=0;
-    while (nominal_setor!=01)
+    int nominal_setor = 0;
+    while (nominal_setor != 01)
     {
         cout << "Setor Tunai\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "00.Kembali\n\n";
         cout << "01.Cancel\n\n";
         cout << "Masukkan Jumlah Uang yang Akan disetorkan : Rp. ";
         cin >> nominal_setor;
-        
+
 
         if (cin.fail())
         {
             system("cls");
             cout << "Setor Tunai\n";
-            cout << "=====================================================================================\n\n";
+            cout << "========================================================================================================================\n\n";
             cout << "Masukkan input yang valid!\n";
             system("pause");
             cin.clear();
             cin.ignore();
             system("cls");
         }
-        else if(nominal_setor == 00){
+        else if (nominal_setor == 00) {
             system("cls");
             halUtama();
         }
-        else if ( nominal_setor % 50000 ==  0 || nominal_setor % 100000 == 0) {
+        else if (nominal_setor % 50000 == 0 || nominal_setor % 100000 == 0) {
             systemSetorTunai(nominal_setor, email);
             if (stat_exit == 0)
             {
@@ -373,14 +377,14 @@ void halSetorTunai() {
         else {
             system("cls");
             cout << "Setor Tunai\n";
-            cout << "=====================================================================================\n\n";
+            cout << "========================================================================================================================\n\n";
             cout << "Mohon Maaf, Kelipatan Setoran yang diterima adalah Rp. 50.000 dan Rp. 100.000\n\n";
             system("pause");
             system("cls");
         }
     }
     cout << "Setor Tunai\n";
-    cout << "=====================================================================================\n\n";
+    cout << "========================================================================================================================\n\n";
     exit(1);
 }
 
@@ -395,7 +399,7 @@ void halTransfer() {
     int opsi;
 
     cout << "Transfer\n";
-    cout << "=====================================================================================\n\n";
+    cout << "========================================================================================================================\n\n";
     cout << "1.Antar Rekening\n";
     cout << "2.Antar Bank\n";
     cout << "3.Virtual Account\n";
@@ -425,7 +429,7 @@ void halTransfer() {
         system("pause");
         system("cls");
         cout << "Transfer\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "1.Antar Rekening\n";
         cout << "2.Antar Bank\n";
         cout << "3.Virtual Account\n\n";
@@ -442,7 +446,7 @@ void antarRekening() {
 input:
     string no_rek;
     cout << "Transfer Antar Rekening\n";
-    cout << "=====================================================================================\n";
+    cout << "========================================================================================================================\n\n";
     cout << "Kode Rekening Bank Nur Muttaqin : 221524XXX\n\n";
 
     cout << "Masukkan Nomor Rekening : ";
@@ -456,7 +460,7 @@ input:
         goto input;
     }
 
-    validasiNoRekAntarRek(email,no_rek);
+    validasiNoRekAntarRek(email, no_rek);
     if (stat_exit == 0)
     {
         system("cls");
@@ -483,7 +487,7 @@ void halDaftarMutasi() {
 input:
     int jml;
     cout << "Daftar Mutasi\n";
-    cout << "=====================================================================================\n\n";
+    cout << "========================================================================================================================\n\n";
     cout << "Masukkan Jumlah Riwayat Transaksi Terakhir yang Anda Ingin Lihat : ";
     cin >> jml;
 
@@ -504,21 +508,22 @@ void halPelayanan() {
     int opsi;
 
     cout << "Opsi Pelayanan\n";
-    cout << "=====================================================================================\n\n";
+    cout << "========================================================================================================================\n\n";
     cout << "1.Ubah PIN\n";
     cout << "2.Ubah E-Mail\n";
     cout << "3.Ubah Status Aktivasi Kartu\n\n";
+    cout << "99.Kembali\n\n";
 
     cout << "Masukkan Opsi : ";
     cin >> opsi;
 
-    while (opsi!=99)
+    while (opsi != 99)
     {
         switch (opsi)
         {
-        case 1:system("cls");ubahPIN(); break;
-        case 2:system("cls");ubahEmail(); break;
-        case 3:system("cls");ubahAktivasi(); break;
+        case 1:system("cls"); ubahPIN(); break;
+        case 2:system("cls"); ubahEmail(); break;
+        case 3:system("cls"); ubahAktivasi(); break;
         default:
             cout << "Masukkan Input yang Valid!";
             if (cin.fail())
@@ -541,7 +546,7 @@ input:
     if (tgl_lahir_statubahpin == 0)
     {
         cout << "Ubah PIN\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "99.Kembali\n\n";
 
         cout << "Konfirmasi Tanggal Lahir Anda (DD/MM/YYYY) : ";
@@ -557,7 +562,7 @@ input:
     input_pin:
         system("cls");
         cout << "Ubah PIN\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "99.Batal\n\n";
 
         cout << "Masukkan PIN Baru : ";
@@ -604,7 +609,7 @@ input:
             cin.ignore();
             goto input_konfirmasi;
         }
-        
+
         while (konfirmasipin != pinbaru) {
             cout << "Konfirmasi PIN salah!\n";
             system("pause");
@@ -629,7 +634,7 @@ input:
     if (tgl_lahir_statubahemail == 0)
     {
         cout << "Ubah E-Mail\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "99.Kembali\n\n";
 
         cout << "Konfirmasi Tanggal Lahir Anda (DD/MM/YYYY) : ";
@@ -640,11 +645,12 @@ input:
             halUtama();
         }
         validasiTglLahir(tgl_lahir, email);
-    }else {
+    }
+    else {
     input_email:
         system("cls");
         cout << "Ubah E-Mail\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "99.Batal\n\n";
 
         cout << "Masukkan Email Baru : ";
@@ -687,7 +693,7 @@ input:
     if (tgl_lahir_statusubahaktivasi == 0)
     {
         cout << "Ubah Status Aktivasi\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "99.Kembali\n\n";
 
         cout << "Konfirmasi Tanggal Lahir Anda (DD/MM/YYYY) : ";
@@ -703,7 +709,7 @@ input:
     inputaktivasi:
         system("cls");
         cout << "Ubah Status aktivasi\n";
-        cout << "=====================================================================================\n\n";
+        cout << "========================================================================================================================\n\n";
         cout << "1.Aktifkan Akun\n";
         cout << "2.Non-Aktifkan Akun\n\n";
         cout << "99.Batal\n\n";
